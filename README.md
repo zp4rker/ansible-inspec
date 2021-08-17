@@ -1,13 +1,11 @@
 # Ansible Role: Inspec
 
 ## Purpose
-This role allows you to execute [Inspec](https://www.inspec.io/) tests that are contained within your project when executing on Ansible Tower / AWX. It works with both Linux and Windows targets (other targets not supported / tested).
-
-*Note:* this is intended to test live targets after having ran your playbook(s). It is not related to [Kitchen](https://docs.chef.io/kitchen.html) or [Molecule](https://molecule.readthedocs.io/en/latest/).
+This role allows you to execute [Inspec](https://www.inspec.io/) tests that are contained within your project when executing on Ansible. It works with both Linux and Windows targets (other targets not supported / tested).
 
 ## Usage
 ### Create Inspec profile structure
-Create a folder **within** your role(s) named `inspec-profile` (the name must be exact!). Then, follow the [Inspec profile structure](https://www.inspec.io/docs/reference/profiles/) to create the contents of the profile.
+Create a folder named `inspec-profile` (or a name of your liking). Then, follow the [Inspec profile structure](https://www.inspec.io/docs/reference/profiles/) to create the contents of the profile.
 
 You will most likely have the following basic structure -
 ```
@@ -43,9 +41,8 @@ You must create a task within your role(s) to execute the tests. Insert the foll
     - name: run inspec tests
       include_role:
         name: inspec
-        tasks_from: inspec-exec.yml
       vars:
-        inspec_imported_role_path: '{{ current_role_path }}'
+        inspec_profile_dir: '{{ current_role_path }}/inspec-profile'
 ```
 
 Inserting this block at the bottom of the `main.yml` file ensures the tests run **after** your role has completed its tasks.
