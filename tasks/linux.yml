@@ -5,7 +5,7 @@
   environment:
     SSH_AUTH_SOCK: '{{ inventory_dir }}/ssh_auth.sock'
   command: >
-    inspec exec {{ inspec_profile_dir }}
+    inspec exec {{ inspec_profile_dir }} --reporter json-min
       -b ssh
       --host {{ inventory_hostname }}
       --user {{ ansible_user_id }}
@@ -15,9 +15,9 @@
   register: inspec_out
   when: ansible_connection != "local"
 
-- name: inspec exec
+- name: inspec exec locally
   changed_when: false
-  command: inspec exec {{ inspec_profile_dir }} {{ inspec_attr_arg }}
+  command: inspec exec {{ inspec_profile_dir }} --reporter json-min {{ inspec_attr_arg }}
   no_log: true
   ignore_errors: yes
   register: inspec_out
@@ -25,11 +25,11 @@
   
 - name: inspec exec - stdout
   debug:
-    var: inspec_out.stdout_lines
+    var: inspec_out.stdout | from_json
   when: inspec_out.rc == 0 or inspec_out.rc == 101
 
 - name: inspec exec debug - stderr
   debug:
-    var: inspec_out.stdout_lines
+    var: inspec_out.stdout | from_json
   when: inspec_out.rc != 0 and inspec_out.rc != 101
   failed_when: true
