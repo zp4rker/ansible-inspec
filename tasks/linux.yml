@@ -1,5 +1,4 @@
 ---
-
 - name: inspec exec
   delegate_to: localhost
   changed_when: false
@@ -14,6 +13,15 @@
   no_log: true
   ignore_errors: yes
   register: inspec_out
+  when: ansible_connection != "local"
+
+- name: inspec exec
+  changed_when: false
+  command: inspec exec {{ inspec_profile_dir }} {{ inspec_attr_arg }}
+  no_log: true
+  ignore_errors: yes
+  register: inspec_out
+  when: ansible_connection == "local"
   
 - name: inspec exec - stdout
   debug:
