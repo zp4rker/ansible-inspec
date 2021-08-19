@@ -1,5 +1,8 @@
 # Ansible Role: Inspec
 
+## Notice
+Rewritten as a module @ https://github.com/zp4rker/ansible-inspec-module
+
 ## Purpose
 This role allows you to execute [Inspec](https://www.inspec.io/) tests that are contained within your project when executing on Ansible. It works with both Linux and Windows targets (other targets not supported / tested).
 
